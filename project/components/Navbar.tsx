@@ -1,24 +1,24 @@
 "use client";
 import Image from 'next/image';
 import { useState } from "react";
-import Link from "next/link";
 import { Dialog } from '@headlessui/react';
-import { IoCartOutline, IoClose, IoMenu } from "react-icons/io5";
+import {  IoClose, IoMenu } from "react-icons/io5";
 import Cart from "./Cart";
 
-declare module '@headlessui/react' {
-    interface Dialog {
-      Overlay: React.ComponentType<{ className?: string }>;
-    }
-  }
 
-const Navbar = ({ cartItems, onRemove, }: { cartItems: any[]; onRemove: (id: string) => void;}) => {
+type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+};
+
+const Navbar = ({ cartItems, onRemove, }: { cartItems: CartItem[]; onRemove: (id: string) => void;}) => {
     const [activeElement, setActiveElement] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false); // State for menu visibility
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [localCartItems, setLocalCartItems] = useState<
-    { id: string; name: string; price: number; quantity: number; image: string }[]
-   >([])
+  
 
   const handleElementClick = (element: string) => {
     setActiveElement(element);
@@ -56,26 +56,7 @@ const Navbar = ({ cartItems, onRemove, }: { cartItems: any[]; onRemove: (id: str
 
   const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  const handleAddToCart = (product: {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-  }) => {
-    setLocalCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  const handleRemoveFromCart = (id: string) => {
-    setLocalCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
+ 
 
   return (
     <header className="text-gray-600 body-font px-4 md:px-40 relative w-full ">

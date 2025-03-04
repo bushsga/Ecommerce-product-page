@@ -1,24 +1,26 @@
 
 "use client";
 import Link from "next/link";
-import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
 const CheckoutPage = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
 
-  
+  // Load cart from localStorage on mount
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("cartItems") || "[]");
     setCartItems(items);
   }, []);
 
+  // Update localStorage when cart changes
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const handlePayment = () => {
     alert("Payment successful! Thank you for your purchase.");
-
     localStorage.removeItem("cartItems");
-    setCartItems([]); 
-
+    setCartItems([]); // Clear cart
   };
 
   return (

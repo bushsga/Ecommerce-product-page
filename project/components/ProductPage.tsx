@@ -3,11 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Dialog } from "@headlessui/react";
-import { IoClose, IoCartOutline } from "react-icons/io5";
-import { LuGalleryThumbnails } from "react-icons/lu";
+import {  IoCartOutline } from "react-icons/io5";
 
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+};
 
-const ProductPage = ({onAddToCart} : { onAddToCart: (product: any) => void }) => {
+const ProductPage = ({onAddToCart} : { onAddToCart: (product: Product) => void }) => {
     const productImages = [
         "/images/image-product-1.jpg",
         "/images/image-product-2.jpg",
